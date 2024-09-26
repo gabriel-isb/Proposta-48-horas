@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronômetro de Proposta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0; /* Remove a margem padrão do body */
+            padding: 0; /* Remove o preenchimento padrão do body */
+            height: 100vh; /* Faz o body ocupar toda a altura da viewport */
+            background-image: url(/img/Fundo.jpg);
+            background-size: cover; /* Cobre toda a área */
+            background-position: center; /* Centraliza a imagem */
+            background-repeat: no-repeat; /* Não repete a imagem */
+            position: relative;
+        }
+
+        h1 {
+            color: #ffffff; 
+            z-index: 1;
+            position: relative;
+        }
+
+        p {
+            color: #FFFFFF;
+            font-size: 22px;
+            z-index: 1;
+            position: relative;
+        }
+
+        #countdown {
+            font-size: 48px;
+            color: #ffffff; 
+            z-index: 1;
+            position: relative;
+        }
+
+        #contact {
+            margin-top: 20px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .whatsapp-link {
+            display: inline-block;
+            background-color: #25D366; /* Cor do WhatsApp */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.3s; /* Transições suaves */
+        }
+
+        .whatsapp-link:hover {
+            background-color: #128C7E; /* Cor do WhatsApp ao passar o mouse */
+            transform: scale(1.05); /* Efeito de crescimento ao passar o mouse */
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: center; /* Centraliza verticalmente */
+            margin-bottom: 20px; /* Espaço entre as logotipos e o restante do conteúdo */
+            z-index: 1;
+            position: relative;
+        }
+
+        .logo {
+            max-width: 700px; /* Ajuste o tamanho máximo conforme necessário */
+        }
+
+        @media (max-width: 600px) {
+            body {
+                margin: 0; /* Menos margem em telas pequenas */
+            }
+
+            #countdown {
+                font-size: 36px; /* Tamanho do contador reduzido */
+            }
+
+            .logo {
+                max-width: 500px; /* Tamanho das logotipos em telas pequenas */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="/img/logo.png" alt="Logo" class="logo">
+    </div>
+    <h1>Proposta Válida por apenas 48 Horas!!</h1>
+    <div id="countdown"></div>
+    <div id="contact">
+        <p>Para aceitar a proposta, entre em contato via WhatsApp pelo botão abaixo:</p>
+        <a href="https://wa.me/5527996107474?text=Olá,%20quero%20aceitar%20a%20proposta!" class="whatsapp-link" target="_blank">Aceitar Proposta</a>
+    </div>
+    <script>
+        // Define a data de término (48 horas a partir de agora)
+        const proposalDuration = 48 * 60 * 60 * 1000; // 48 horas em milissegundos
+        const startDate = new Date(); // Data atual
+        const endDate = new Date(startDate.getTime() + proposalDuration); // Data de término
+
+        const countdownElement = document.getElementById('countdown');
+
+        // Função para atualizar o cronômetro
+        function updateCountdown() {
+            const now = new Date(); // Data e hora atual
+            const timeRemaining = endDate - now; // Tempo restante
+
+            if (timeRemaining <= 0) {
+                countdownElement.innerHTML = "Proposta expirada!";
+                clearInterval(interval);
+                return;
+            }
+
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 48)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            countdownElement.innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        // Atualiza o cronômetro a cada segundo
+        const interval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Chama uma vez para evitar atraso
+    </script>
+</body>
+</html>
