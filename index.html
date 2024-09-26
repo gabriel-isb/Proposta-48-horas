@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             height: 100vh;
-            background-image: url('img/Fundo.jpg'); /* Caminho corrigido */
+            background-image: url('img/Fundo.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -83,14 +83,14 @@
             }
 
             .logo {
-                max-width: 500px;
+                max-width: 400px;
             }
         }
     </style>
 </head>
 <body>
     <div class="logo-container">
-        <img src="img/logo.png" alt="Logo" class="logo"> <!-- Caminho corrigido -->
+        <img src="img/logo.png" alt="Logo" class="logo">
     </div>
     <h1>Proposta Válida por apenas 48 Horas!!</h1>
     <div id="countdown"></div>
@@ -100,8 +100,17 @@
     </div>
     <script>
         const proposalDuration = 48 * 60 * 60 * 1000; // 48 horas em milissegundos
-        const startDate = new Date(); // Data atual
-        const endDate = new Date(startDate.getTime() + proposalDuration); // Data de término
+        let endDate;
+
+        // Verifica se já existe uma data de término armazenada
+        const storedEndDate = localStorage.getItem('endDate');
+        if (storedEndDate) {
+            endDate = new Date(storedEndDate);
+        } else {
+            const startDate = new Date(); // Data atual
+            endDate = new Date(startDate.getTime() + proposalDuration); // Data de término
+            localStorage.setItem('endDate', endDate); // Armazena a data de término
+        }
 
         const countdownElement = document.getElementById('countdown');
 
@@ -112,10 +121,11 @@
             if (timeRemaining <= 0) {
                 countdownElement.innerHTML = "Proposta expirada!";
                 clearInterval(interval);
+                localStorage.removeItem('endDate'); // Remove a data de término quando expirar
                 return;
             }
 
-            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 48)) / (1000 * 60 * 60));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
